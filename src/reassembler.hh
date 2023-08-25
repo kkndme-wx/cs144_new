@@ -6,6 +6,13 @@
 
 class Reassembler
 {
+private:
+	std::list<std::pair<uint64,std::string>> buffer_;		
+ 	uint64_t first_unassemble_index{0};	
+	uint64_t bytes_pushed_ {0};
+	void insert_into_buffer(string data);
+	void pop_from_buffer(Writer& output );
+	
 public:
   /*
    * Insert a new substring to be reassembled into a ByteStream.
