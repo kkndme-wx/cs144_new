@@ -2,19 +2,21 @@
 
 using namespace std;
 	
-		
-void Reassembler::write_into_bytestream(Writer & output){
-	while(output.available_capacity() >= 0&&(bytes_pushed <= output.available_capacity()){
-		auto it = mp.begin();
-		output.push(std::move(it->second));
-		mp.erase(it);	
+void Reassembler::insert_into_buffer(uint64_t first_index,string data)
+{
+	uint64_t begin_index = first_index;
+	uint64_t end_index = first_index + data.size();	
+
+	for(auto it = buffer_.begin();it != buffer_.end()){
+		if(it->first <= begin_index ){
+			begin_index = max(begin_index,it->first+it->second.size());
+			++it;
+			continue;	
+		}
 	}
-	if(bytes_pushed > output.available_capacity() ){
-		auto tmp_len = output.available_capacity();		
-		
-	}
-		
-} 
+	buffer_.emplace()
+
+}		
 void Reassembler::insert( uint64_t first_index, string data, bool is_last_substring, Writer& output )
 {
   // Your code here.
@@ -23,18 +25,38 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
   (void)is_last_substring;
   (void)output;
 */
-  if(is_last_substring){
-	output.close();
-	return;
-  } 
-  uint64_t end_index = first_index + data.size();
-  first_unacceptable_index = first_unassemble_index + output.available_capacity();
-  if(first_index < first_unassemble_index || first_index > first_unacceptable_index|| end_index > first_unacceptable_index)
-  	return ;
-  first_unassemble_index += data.size(); 
-  bytes_pushed += data.size();
-  mp.emplace(std::make_pair(first_index,std::move(data)));
-  write_into_bytestream(output); 
+	
+	uint64_t first_unacceptable_index = first_unassemble_index + output.available_capacity();
+	uint64_t end_index = first_index + data.size();
+	if(end_index < first_unassemble_index || first_index > first_unacceptable_index){
+		return ;
+	}	
+	if(end_index > first_unacceptable_index){
+		data = data.substr(0,first_unacceptable_index-first_index);
+		is_last_substring = false;
+	}
+	if(first_index > first_unassemble_index){
+		insert_into_buffer(first_index,data);
+		return ;
+	}
+	if(first_index < first_unassemble_index){
+		data = data.substr(first_unassemble_index - first_index);
+	}
+	first_unassemble_index += data.size();
+	output.push(std::move(data));
+	
+	if(!buffer_.empty()  && buffer_.begin()->first < first_unassemble_index){
+		pop_from_buffer(output);
+	}
+	
+
+
+
+
+
+
+
+
 }
 
 
