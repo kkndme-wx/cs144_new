@@ -89,7 +89,7 @@ void Writer::push( string data )
     data = data.substr( 0, n );
   }
   data_queue_.push_back( std::move( data ) );
-  view_queue_.emplace_back( data_queue_.back().c_str(), n);
+  view_queue_.emplace_back( data_queue_.back().c_str(), n );
   num_bytes_buffered_ += n;
   num_bytes_pushed_ += n;
 }
@@ -129,8 +129,7 @@ string_view Reader::peek() const
 
   if ( view_queue_.empty() ) {
 
-    return {
-};
+    return {};
   }
   return view_queue_.front();
 }

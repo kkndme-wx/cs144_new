@@ -2,18 +2,16 @@
 
 #include "byte_stream.hh"
 
-#include <string>
-#include<list>
 class Reassembler
 {
 private:
-	bool has_last {false};
-	std::list<std::pair<uint64_t,std::string>> buffer_{};		
- 	uint64_t first_unassemble_index{0};	
-	uint64_t bytes_pushed_ {0};
-	void insert_into_buffer(uint64_t first_index,std::string &&data,bool is_last_substring);
-	void pop_from_buffer(Writer& output );
-	
+  bool has_last { false };
+  std::list<std::pair<uint64_t, std::string>> buffer_ {};
+  uint64_t first_unassemble_index { 0 };
+  uint64_t bytes_pushed_ { 0 };
+  void insert_into_buffer( uint64_t first_index, std::string&& data, bool is_last_substring );
+  void pop_from_buffer( Writer& output );
+
 public:
   /*
    * Insert a new substring to be reassembled into a ByteStream.
