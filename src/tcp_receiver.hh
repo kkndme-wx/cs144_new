@@ -3,9 +3,12 @@
 #include "reassembler.hh"
 #include "tcp_receiver_message.hh"
 #include "tcp_sender_message.hh"
+#include "Wrapping_integers.hh"
 
 class TCPReceiver
 {
+private:
+		std::optional<Wrap32> isn_{};
 public:
   /*
    * The TCPReceiver receives TCPSenderMessages, inserting their payload into the Reassembler

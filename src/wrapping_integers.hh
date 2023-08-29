@@ -12,6 +12,8 @@ class Wrap32
 {
 protected:
   uint32_t raw_value_ {};
+  bool has_value(){return raw_value_ == 0;}
+  uint32_t value(){return raw_value_;}
 
 public:
   explicit Wrap32( uint32_t raw_value ) : raw_value_( raw_value ) {}
