@@ -22,11 +22,11 @@ TCPReceiverMessage TCPReceiver::send( const Writer& inbound_stream ) const
 {
 		TCPReceiverMessage tmsg{};
 		auto const win_size = inbound_stream.available_capacity();
-		msg.window_size = win_size <UINT16_MAX? win_size:UINT16_MAX;
+		tmsg.window_size = win_size <UINT16_MAX? win_size:UINT16_MAX;
 
-		if(isn.has_value){
+		if(isn_.has_value()){
 			uint64_t const abs_seq = inbound_stream.bytes_pushed()+1+inbound_stream.is_closed();
-			msg.ackno = Wrap32::wrap(abs_seq,isn.value());	
+			tmsg.ackno = Wrap32::wrap(abs_seq,isn_.value());	
 		}
-		return msg;
+		return tmsg;
 }
